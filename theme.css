@@ -1,29 +1,3 @@
 body {
     FONT-FAMILY: lucida-sans, sans-serif; FONT-SIZE: 14pt; FONT-STYLE: normal; FONT-VARIANT: normal; margin: 100px
 }
-
-.title {
-    text-align: center; FONT-SIZE: 40pt; FONT-STYLE: normal;
-    font-weight: bold
-}
-
-.center_text {
-	text-align: center
-}
-
-.image_center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: auto;
-}
-
-.header {
-	text-align: center; FONT-SIZE: 30pt; FONT-STYLE: normal;
-    font-weight: bold; margin: 60px; border: 5px solid #aaa;
-    padding: 30px;
-}
-
-.large_text {
-    FONT-SIZE: 20pt;
-}

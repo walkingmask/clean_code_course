@@ -1,53 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     
 <head>
-    <link rel="stylesheet" type="text/css" href="./theme.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./theme.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
     <script>hljs.initHighlightingOnLoad();</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
 </head>
 <body>
+<div class="container">
     
-<pre class="title">
-コーディングベストプラクティス
-AI Okinawa
-Jakub “Kuba” Kolodziejczyk
-</pre>
+<div class="jumbotron text-center">
+<h1>コーディングベストプラクティス</h1>
+<h2>AI Okinawa</h2>
+<h2>Jakub “Kuba” Kolodziejczyk</h2>
+</div>
+
+<h2 class="text-center bg-success text-white">Don’t assume textbooks and tutorials show a good way to write code</h2><br>
     
-<div class="header">Don’t assume textbooks and tutorials show a good way to write code</div>
-    
-<pre><code class="c">
-int marks = 100, *p1, *p2;
+<pre><code class="c">int marks = 100, *p1, *p2;
 p1 = &marks;
 p2 = p1;
 </code></pre>
     
-<div class="header">Naming rules I<br>Use natural, descriptive language</div>
+<br><h2 class="text-center bg-success text-white">Naming rules I<br>Use natural, descriptive language</h2><br>
     
-<pre><code class="python" theme="monokai">
-for b in bb:
+<pre><code class="python" theme="monokai">for b in bb:
     for j in c:
         fff(b, j)
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-for box in boxes:
+<pre><code class="python">for box in boxes:
     for color in colors:
         draw(box, color)
 </code></pre>
 
-<div class="header">Naming rules II<br>Nouns for objects, verbs for actions, plurals for plurals</div>
-- nouns for objects<br>
-- verbs for actions<br>
-- plurals for plurals<br>
-    
-<pre><code class="python">
-my_house = House()
+<br><h2 class="text-center bg-success text-white">Naming rules II<br>Nouns for objects, verbs for actions, plurals for plurals</h2><br>
+
+<ul class="list-group">
+    <li class="list-group-item">nouns for objects</li>
+    <li class="list-group-item">verbs for actions</li>
+    <li class="list-group-item">plurals for plurals</li>
+</ul><br>
+
+<pre><code class="python">my_house = House()
 print(my_house.get_value())
 
 rooms = ["kitchen", "garage"]
@@ -55,29 +62,26 @@ my_house.renew(rooms)
 </code></pre>
     
     
-<div class="header">Naming rules III<br>Don’t use abbreviations</div>
+<br><h2 class="text-center bg-success text-white">Naming rules III<br>Don’t use abbreviations</h2>
 
-<pre><code class="python">
-imgSz = 1280
+<pre><code class="python">imgSz = 1280
 cat = len(catDic.keys())
 
 genFctr = DataBtchsGenFactory(datDir, cat, imgSz)
 </code></pre>
 
-vs
+vs<br><br>
     
-<pre><code class="python">
-image_size = 1280
+<pre><code class="python">image_size = 1280
 categories_count = len(categories_dictionary.keys())
 
 generator_factory = DataBatchesGeneratorFactory(
     data_directory, categories_dictionary, image_size)
 </code></pre>
     
-<div class="header">Use names that correctly indicate responsibility</div>
+<br><h2 class="text-center bg-success text-white">Use names that correctly indicate responsibility</h2><br>
     
-<pre><code class="python">
-def get_volume(box):
+<pre><code class="python">def get_volume(box):
 
     first_distance = get_distance(box[0], box[1])
     second_distance = get_distance(box[1], box[2])
@@ -88,10 +92,9 @@ def get_volume(box):
 area = get_volume(box)
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-def get_circumference(triangle):
+<pre><code class="python">def get_circumference(triangle):
 
     first_distance = get_distance(triangle[0], triangle[1])
     second_distance = get_distance(triangle[1], triangle[2])
@@ -102,21 +105,22 @@ def get_circumference(triangle):
 circumference = get_circumference(triangle)
 </code></pre>
 
-<div class="header">Command and query separation</div>
+<br><h2 class="text-center bg-success text-white">Command and query separation</h2><br>
 
-Command: changes state of resource<br>
-Query: retrieves information<br>
+<ul class="list-group">
+    <li class="list-group-item">Command: changes state of resource</li>
+    <li class="list-group-item">Query: retrieves information</li>
+</ul><br>
 
-<br>
-Advantages of queries:
-<ul>
-<li>calls that don't change system are immediately obvious in code</li>
-<li>can be called in any order</li>
-<li>very simple to test</li>
-</ul>
+<h5>Advantages of queries:</h5>
+<ul class="list-group">
+    <li class="list-group-item">Calls that don't change system are immediately obvious in code</li>
+    <li class="list-group-item">Can be called in any order</li>
+    <li class="list-group-item">Simple to test</li>
+</ul><br>
 
-<pre><code class="python">
-def get_total_weight(products):
+
+<pre><code class="python">def get_total_weight(products):
 
     total_weight = 0
 
@@ -130,15 +134,13 @@ def get_total_weight(products):
     return total_weight
 </code></pre>
 
-<pre><code class="python">
-products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
     
 print(get_products_with_no_weight_set(products)
 # returns [Product("post_stamp")]
 </code></pre>
 
-<pre><code class="python">
-products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
 
 print(get_total_weight(products))
 print(get_products_with_no_weight_set(products))
@@ -147,8 +149,7 @@ print(get_products_with_no_weight_set(products))
 
 Better solution
 
-<pre><code class="python">
-def get_total_weight(products):
+<pre><code class="python">def get_total_weight(products):
 
     total_weight = 0
 
@@ -160,8 +161,7 @@ def get_total_weight(products):
     return total_weight
 </code></pre>
 
-<pre><code class="python">
-products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
 
 print(get_total_weight(products))
 print(get_products_with_no_weight_set(products))
@@ -172,8 +172,7 @@ Now results are as expected.<br><br>
 
 Ok, but what about commands that require asking questions? E.g. what if I want to delete files older than one week?
 
-<pre><code class="python">
-# Command can make queries - no problem
+<pre><code class="python"># Command can make queries - no problem
 def delete_old_files(directory):
 
     date_week_ago = datetime.datetime.now() - datetime.timedelta(days=7) 
@@ -188,20 +187,20 @@ def delete_old_files(directory):
 So calling a query from inside a command is fine.<br><br>
 
 What if I want to call a command from inside a query?<br>
-<b>That would mean query changes the system - so it's not a query ^^</b><br>
+<b>That would mean query changes the system - so it's not a query ^^</b><br><br>
 Ok, but what if I want to delete old files and return back how many files are left?<br>
-<b>Just split this into two functions!</b>
+<b>It's best to plit this logic into two functions</b>
 
-<pre><code class="python">
-delete_old_files(directory)
+<pre><code class="python">delete_old_files(directory)
 get_files_count(directory)
 </code></pre>
 
-<div class="header">Single responsibility principle I - classes</div>
-<h3>Class should perform only one type of tasks</h3>
+<div class="text-center bg-success text-white">
+    <br><h2>Single responsibility principle I - classes</h2>
+    <h4>Class should perform only one type of tasks</h4><br>
+</div><br>
 
-<pre><code class="python">
-class AreaCalculator:
+<pre><code class="python">class AreaCalculator:
 
     def get_triangle_area(triangle):
             # ...
@@ -216,10 +215,9 @@ class AreaCalculator:
             # ...
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-class AreaCalculator:
+<pre><code class="python">class AreaCalculator:
 
     def get_triangle_area(triangle):
         # ...
@@ -236,11 +234,12 @@ class StringFormatter:
         # ...
 </code></pre>
 
-<div class="header">Single responsibility principle II - methods</div>
-<h3>Method should return only one type of objects, and preferably only one object</h3>
+<div class="text-center bg-success text-white">
+    <br><h2>Single responsibility principle II - methods</h2>
+    <h4>Method should return only one type of objects, and preferably only one object</h4><br>
+</div><br>
 
-<pre><code class="python">
-def get_image_info(image):
+<pre><code class="python">def get_image_info(image):
 
     # Loads of complicated computations, 10 lines of code
     size = ....
@@ -257,10 +256,9 @@ def get_image_info(image):
     return size, histogram, faces_bounding_boxes, cats_bounding_boxes
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-def get_image_size(image):
+<pre><code class="python">def get_image_size(image):
 
     # Loads of complicated computations, 10 lines of code
     size = ....
@@ -285,11 +283,13 @@ def get_cats_bounding_boxes(image):
     return cats_bounding_boxes
 </code></pre>
 
-<div class="header">Single responsibility principle III - methods within methods</div>
-<h3>Move code that can be encapsulated to its own method</h3>
+<div class="text-center bg-success text-white">
+    <br><h2>Single responsibility principle III - methods within methods</h2>
+    <h4>Move code that can be encapsulated to its own method</h4><br>
+</div><br>
 
-<pre><code class="python">
-def get_car_value(model, year, mileage, accidents_history):
+
+<pre><code class="python">def get_car_value(model, year, mileage, accidents_history):
 
     base_model_value = get_base_model_value(model)
     age_discount = get_age_discount(get_current_year() - year)
@@ -312,10 +312,9 @@ def get_car_value(model, year, mileage, accidents_history):
     return total_value
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-def get_car_value(model, year, mileage, accidents_history):
+<pre><code class="python">def get_car_value(model, year, mileage, accidents_history):
 
     base_model_value = get_base_model_value(model)
     age_discount = get_age_discount(get_current_year() - year)
@@ -345,10 +344,9 @@ def get_capped_value(value, max_value, min_value):
 </code></pre>
 
 
-<div class="header">Don’t repeat yourself (DRY) I - identical code</div>
+<br><h2 class="text-center bg-success text-white">Don’t repeat yourself (DRY) I - identical code</h2><br>
 
-<pre><code class="python">
-class BooksShoppingWidget:
+<pre><code class="python">class BooksShoppingWidget:
 
     def __init__(books):
 
@@ -404,10 +402,9 @@ class RandomBookDescriptionWidget:
         ... = description[:100]
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-def get_book_description(book):
+<pre><code class="python">def get_book_description(book):
 
     # Get first 100 characters of book description
     description = []
@@ -459,10 +456,9 @@ class RandomBookDescriptionWidget:
 </code></pre>
 
 
-<div class="header">Don’t repeat yourself (DRY) II - nearly identical code</div>
+<br><h2 class="text-center bg-success text-white">Don’t repeat yourself (DRY) II - nearly identical code</h2><br>
 
-<pre><code class="python">
-class BooksShoppingWidget:
+<pre><code class="python">class BooksShoppingWidget:
 
     def __init__(books):
 
@@ -519,11 +515,9 @@ class RandomBookDescriptionWidget:
         ... = description[:200]
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-
-def get_book_description(book, characters_count):
+<pre><code class="python">def get_book_description(book, characters_count):
 
     description = []
 
@@ -574,11 +568,9 @@ class RandomBookDescriptionWidget:
         ... = get_book_description(book, 200)
 </code></pre>
 
-<div class="header">Don't modify inputs</div>
+<br><h2 class="text-center bg-success text-white">Don't modify inputs</h2><br>
 
-
-<pre><code class="python">
-def get_largest_absolute_element(data):
+<pre><code class="python">def get_largest_absolute_element(data):
 
     data = [abs(element) for element in data]
     return max(data)
@@ -590,11 +582,10 @@ print(get_largest_absolute_element(data))
 print(data)
 </code></pre>
 
-Vs
+vs<br><br>
 
 
-<pre><code class="python">
-def get_largest_absolute_element(data):
+<pre><code class="python">def get_largest_absolute_element(data):
 
     absolute_data = [abs(element) for element in data]
     return max(absolute_data)
@@ -606,10 +597,9 @@ print(get_largest_absolute_element(data))
 print(data)
 </code></pre>
 
-<div class="header">Split long functions into smaller ones</div>
+<br><h2 class="text-center bg-success text-white">Split long functions into smaller ones</h2><br>
 
-<pre><code class="python">
-def run_experiment(data_directory, model_path):
+<pre><code class="python">def run_experiment(data_directory, model_path):
 
     # Build data generator
     # 20 lines of code
@@ -629,7 +619,7 @@ def run_experiment(data_directory, model_path):
     # Total of 83 lines of code
 </code></pre>
 
-<pre>
+<br><pre>
 Problems:
 - Hard to fit everything in your head -> 
     - Hard to understand
@@ -642,10 +632,9 @@ Problems:
             - Hard to know if you can trust the results
 </pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-def run_experiment(data_directory, model_path):
+<pre><code class="python">def run_experiment(data_directory, model_path):
 
     # Build data generator
     data_generator = get_data_generator(data_directory)
@@ -665,20 +654,18 @@ def run_experiment(data_directory, model_path):
     # Total of 20 lines of code
 </code></pre>
 
-<div class="header">Explicit is always better than implicit I - using globals</div>
+<br><h2 class="text-center bg-success text-white">Explicit is always better than implicit I - using globals</h2><br>
 
-<pre><code class="python">
-# script.py
+<pre><code class="python"># script.py
 images = load_images("2017_vacation")
 
 # Do stuff
 # ...
 </code></pre>
 
-How does the code know where <b>2017_vacation</b> folder is?
+How does the code know where <b>2017_vacation</b> folder is?<br><br>
 
-<pre><code class="python">
-def load_images(directory):
+<pre><code class="python">def load_images(directory):
 
     paths_pattern = os.path.join(config.data_folder, directory, "*.jpg")
     paths = glob.glob(paths_pattern)
@@ -687,28 +674,25 @@ def load_images(directory):
     return images
 </code></pre>
 
-<pre><code class="python">
-# Inside config module
+<pre><code class="python"># Inside config module
 data_folder = "/Users/kuba/data"
 </code></pre>
 
 You have to read content of <b>load_images(...)</b> and of <b>config.py</b> module to understand what’s going on.
-On a different computer that doesn’t have <b>"/Users/kuba/data"</b> folder, it would be impossible to say why script fails looking at <b>scripy.py</b> alone.
+On a different computer that doesn’t have <b>"/Users/kuba/data"</b> folder, it would be impossible to say why script fails looking at <b>scripy.py</b> alone.<br><br>
 
-Solution: use full path as argument to load_images
+Solution: use full path as argument to load_images<br><br>
 
-<pre><code class="python">
-# processing.py
+<pre><code class="python"># processing.py
 images = load_images("/Users/kuba/data/2017_vacation")
 
 # Do stuff
 # ...
 </code></pre>
 
-<div class="header">Explicit is always better than implicit II - assuming your clients</div>
+<br><h2 class="text-center bg-success text-white">Explicit is always better than implicit II - assuming your clients</h2><br>
 
-<pre><code class="python">
-def get_house_value(house_data):
+<pre><code class="python">def get_house_value(house_data):
 
     if house_data.last_evaluation_date == time.today:
         return -1
@@ -720,10 +704,9 @@ def get_house_value(house_data):
     return value
 </code></pre>
 
-Why -1 is returned when <code>last_evaluation_date == time.today</code>?
+Why -1 is returned when <code>last_evaluation_date == time.today</code> ?<br><br>
 
-<pre><code class="python">
-class PropertiesManager:
+<pre><code class="python">class PropertiesManager:
 
     # Other code
     # ...
@@ -741,10 +724,9 @@ class PropertiesManager:
 </code></pre>
 
 Ok, and what would happen if someone who doesn’t know that -1 means cached results should be used calls the function?<br>
-Solution: move cache condition check to PropertiesManager:
+Solution: move cache condition check to PropertiesManager<br><br>
 
-<pre><code class="python">
-class PropertiesManager:
+<pre><code class="python">class PropertiesManager:
 
     # Other code
     # ...
@@ -760,12 +742,11 @@ class PropertiesManager:
         return house_data
 </code></pre>
 
-<div class="header">Process smallest necessary item</div>
+<br><h2 class="text-center bg-success text-white">Process smallest necessary item</h2><br>
 
-Problem: we need to compute areas of a list of boxes.
+Problem: we need to compute areas of a list of boxes.<br><br>
 
-<pre><code class="python">
-def get_areas(boxes):
+<pre><code class="python">def get_areas(boxes):
 
     areas = []
 
@@ -779,36 +760,33 @@ def get_areas(boxes):
     return areas
 </code></pre>
 
-This get the job done, but what if you want to compute area of just one box? You have to call:
+This get the job done, but what if you want to compute area of just one box? You have to call:<br><br>
 
-<pre><code class="python">
-# Wrapping box in a list, unwrapping result to a single area variable
+<pre><code class="python"># Wrapping box in a list, unwrapping result to a single area variable
 area = get_areas([box])[0]
 </code></pre>
 
 This approach is clumsy and harder to test than it should be. It also adds unnecessary complexity of a for loop into the problem.<br>
-Solution - find the smallest task needed: compute area of a single box:
+Solution - find the smallest task needed: compute area of a single box:<br><br>
 
-<pre><code class="python">
-def get_area(box):
+<pre><code class="python">def get_area(box):
 
     width = box[2] - box[1]
     height = box[3] - box[0]
     return width * height
 </code></pre>
 
-Getting areas of a list of boxes is simple too:
+Getting areas of a list of boxes is simple too:<br><br>
 
-<pre><code class="python">
-areas = [get_area(box) for box in boxes]
+<pre><code class="python">areas = [get_area(box) for box in boxes]
 </code></pre>
 
-<div class="header">Error codes vs exceptions</div>
+<br><h2 class="text-center bg-success text-white">Error codes vs exceptions</h2><br>
 
-Task: print a document
+<h5>Sample task: print a document</h5><br>
 
-<pre><code class="python">
-# Using error codes
+
+<pre><code class="python"># Using error codes
 def print(document, print_settings):
 
     # Connect to printer
@@ -839,10 +817,9 @@ if error != 0:
     # Do something
 </code></pre>
 
-vs
+vs<br><br>
 
-<pre><code class="python">
-# With exceptions:
+<pre><code class="python"># With exceptions:
 def print(document, print_settings):
 
     # Connect to printer
@@ -862,18 +839,17 @@ except:
     # Do something
 </code></pre>
 
-<div class="header">Unit tests</div>
+<br><h2 class="text-center bg-success text-white">Unit tests</h2><br>
 
-Why we &hearts; tests:
-<ul>
-<li>Tests check if your new, shiny function is correct</li>
-<li>Tests check if your refactorings won't break anything</li>
-<li>Tests help you write good code, because bad code is hard to test</li>
-<li>Tests form an executable documentation</li>
-</ul>
+<h5>Why we &hearts; tests:</h5>
+<ul class="list-group">
+    <li class="list-group-item">Tests check if your new, shiny function is correct</li>
+    <li class="list-group-item">Tests check if your refactorings won't break anything</li>
+    <li class="list-group-item">Tests help you write good code, because bad code is hard to test</li>
+    <li class="list-group-item">Tests form an executable documentation</li>
+</ul><br>
 
-<pre><code class="python">
-def get_max(values):
+<pre><code class="python">def get_max(values):
     """
     A simple function to get maximum value from a list of values
     """
@@ -887,8 +863,7 @@ def get_max(values):
     return max_value
 </code></pre>
 
-<pre><code class="python">
-# Execute with py.test or similar
+<pre><code class="python"># Execute with py.test or similar
 def test_get_max():
 
     values = [2, 5, 10, 1]
@@ -899,10 +874,9 @@ def test_get_max():
     assert expected == actual
 </code></pre>
 
-Harder example
+Harder example<br><br>
 
-<pre><code class="python">
-# Are you sure you can write this function without any bugs?
+<pre><code class="python"># Are you sure you can write this function without any bugs?
 def get_polygon_area(polygon):
     
     # Loads of math
@@ -910,10 +884,9 @@ def get_polygon_area(polygon):
     return area
 </code></pre>
 
-With unit tests you will know if your code is right or wrong!
+With unit tests you will know if your code is right or wrong!<br><br>
 
-<pre><code class="python">
-def test_get_polygon_area_square():
+<pre><code class="python">def test_get_polygon_area_square():
 
     polygon = [(0, 0), (10, 0), (10, 10), (0, 10)]
 
@@ -943,27 +916,26 @@ def test_get_polygon_area_triangle():
     assert expected == get_polygon_area(polygon)
 </code></pre>
 
-But writing tests slows me down!<br><br>
+<br><h5>But writing tests slows me down!</h5><br>
 
 Consider this:
-<ul>
-<li>If you don't know your code is correct, how can you tell you're done? If you don't know when you're done, how can you measure if tests slow you down?</li>
-<li>Is it better to write correct function in 30min, or wrong one in 10min and next week have entire team blocked for 4h while you try to figure out what needs fixing and how to fix it?</li>
-<li>Do you prefer to find your bugs yourself, or would you rather have an angry customer bring them up to your boss?</li>
-</ul>
+<ul class="list-group">
+    <li class="list-group-item">If you don't know your code is correct, how can you tell you're done? If you don't know when you're done, how can you measure if tests slow you down?</li>
+    <li class="list-group-item">Is it better to write correct function in 30min, or wrong one in 10min and next week have entire team blocked for 4h while you try to figure out what needs fixing and how to fix it?</li>
+    <li class="list-group-item">Do you prefer to find your bugs yourself, or would you rather have an angry customer bring them up to your boss?</li>
+</ul><br>
 
-<div class="header">Splitting complex classes into components</div>
+<h2 class="text-center bg-success text-white">Splitting complex classes into components</h2><br>
 
-Suppose you have to write an app with a reasonably complex GUI
+Suppose you have to write an app with a reasonably complex GUI<br><br>
 <figure>
-    <img src="./images/expense_manager.png" class="image_center">
-    <figcaption class="center_text">Expense Manager app by Bishinews</figcaption>
+    <img src="./images/expense_manager.png" class="mx-auto d-block">
+    <figcaption class="text-center">Expense Manager app by Bishinews</figcaption>
 </figure>
 
-Here's a naive way to go about it
+<br>Here's a naive way to go about it<br><br>
 
-<pre><code class="python">
-class App {
+<pre><code class="python">class App {
     
     def __init__(self):
 
@@ -989,12 +961,11 @@ class App {
         # 500 more lines of code building other widgets
 </code></pre>
 
-Every single button, label and other simple widget on the screen is defined inside App class. This makes App class very large and complex - hence hard to work with and easy to break.
+Every single button, label and other simple widget on the screen is defined inside App class. This makes App class very large and complex - hence hard to work with and easy to break.<br>
 
-Instead of writing everything inside App class, search for components that could encapsulate simple elements.
+Instead of writing everything inside App class, search for components that could encapsulate simple elements.<br><br>
 
-<pre><code class="python">
-class App {
+<pre><code class="python">class App {
     
     def __init__(self):
 
@@ -1025,11 +996,10 @@ class TimeRangesContainer(Container):
         # 20 lines of UI code around buttons
 </code></pre>
 
-<div class="header">Anonymous functions and their drawbacks</div>
-Without anonymous function:
+<br><h2 class="text-center bg-success text-white">Anonymous functions and their drawbacks</h2><br>
+Without anonymous function:<br>
 
-<pre><code class="js">
-function on_button_clicked() {
+<pre><code class="js">function on_button_clicked() {
     // Do something
 }
 
@@ -1038,17 +1008,14 @@ $(".btn_1").click(on_button_clicked);
 
 With anonymous function:
 
-<pre><code class="js">
-$(".btn_1").click(function() {
+<pre><code class="js">$(".btn_1").click(function() {
   // Do something
 });
 </code></pre>
 
 The problem is you can't test that. So how do you know if code below is correct?
 
-<pre><code class="js">
-$(".phone_number").focusout(function() {
-
+<pre><code class="js">$(".phone_number").focusout(function() {
   // get text
   var phone_number = $(".phone_number").val() ;
 
@@ -1060,10 +1027,9 @@ $(".phone_number").focusout(function() {
 });
 </code></pre>
 
-If instead you write
+If instead you wrote
 
-<pre><code class="js">
-function get_formatted_phone_number(phone_number) {
+<pre><code class="js">function get_formatted_phone_number(phone_number) {
 
     // format it in xxx-yyyy-zzz form
     // ....
@@ -1079,12 +1045,11 @@ $(".phone_number").focusout(function() {
 });
 </code></pre>
 
-you can now test that your logic is correct.
+you could test that your logic is correct.<br>
 
-<div class="header">Use sets for filtering unique elements</div>
+<br><h2 class="text-center bg-success text-white">Use sets for filtering unique elements</h2><br>
 
-<pre><code class="python">
-import time
+<pre><code class="python">import time
 import numpy as np
 
 
@@ -1129,25 +1094,24 @@ if __name__ == "__main__":
     main()
 </code></pre>
 
-<pre><code class="shell">
-python ./main.py
+<pre><code class="shell">python ./main.py
 get_unique_elements(...) computation time: 1.90668 sec
 set(...) computation time: 0.07359 sec
 Are both unique elements the same: True
 </code></pre>
 
-<div class="header">Write code for reader who doesn't know it</div>
+<br><h2 class="text-center bg-success text-white">Write code for reader who doesn't know it</h2><br>
 
-<div class="header">Recommended reading</div>
+<br><h2 class="text-center bg-success text-white">Recommended reading</h2><br>
 
-<ul class="large_text">
-<li>"Code Complete" by Steve McConnell (日本語版あり)</li>
-<li>"The Algorithm Design Manual" by Steven S. Skiena (日本語版あり)</li>
-<li>"Design patterns: Elements of reusable object-oriented software" by Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides (Gang of Four)</li>
-<li>"Effective Java" by Joshua Bloch (日本語版あり)</li>
-</ul>
+<ul class="list-group">
+    <li class="list-group-item">"Code Complete" by Steve McConnell (日本語版あり)</li>
+    <li class="list-group-item">"The Algorithm Design Manual" by Steven S. Skiena (日本語版あり)</li>
+    <li class="list-group-item">"Design patterns: Elements of reusable object-oriented software" by Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides (Gang of Four)</li>
+    <li class="list-group-item">"Effective Java" by Joshua Bloch (日本語版あり)</li>
+</ul><br>
 
-
+</div>
 </body>
 </html>
 
