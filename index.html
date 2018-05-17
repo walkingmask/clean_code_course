@@ -20,7 +20,7 @@
 <div class="container">
     
 <div class="jumbotron text-center">
-<h1>コーディングベストプラクティス</h1>
+<h1>Clean Code</h1>
 <h2>AI Okinawa</h2>
 <h2>Jakub “Kuba” Kolodziejczyk</h2>
 </div>
@@ -64,7 +64,7 @@ my_house.renew(rooms)
     
 <br><h2 class="text-center bg-success text-white">Naming rules III<br>Don’t use abbreviations</h2>
 
-<pre><code class="python">imgSz = 1280
+<br><pre><code class="python">imgSz = 1280
 cat = len(catDic.keys())
 
 genFctr = DataBtchsGenFactory(datDir, cat, imgSz)
@@ -189,11 +189,11 @@ So calling a query from inside a command is fine.<br><br>
 What if I want to call a command from inside a query?<br>
 <b>That would mean query changes the system - so it's not a query ^^</b><br><br>
 Ok, but what if I want to delete old files and return back how many files are left?<br>
-<b>It's best to plit this logic into two functions</b>
+<b>It's best to plit this logic into two functions</b><br><br>
 
 <pre><code class="python">delete_old_files(directory)
 get_files_count(directory)
-</code></pre>
+</code></pre><br>
 
 <div class="text-center bg-success text-white">
     <br><h2>Single responsibility principle I - classes</h2>
@@ -281,7 +281,7 @@ def get_cats_bounding_boxes(image):
     # Loads of complicated computations, 200 lines of code
     cats_bounding_boxes = ...
     return cats_bounding_boxes
-</code></pre>
+</code></pre><br>
 
 <div class="text-center bg-success text-white">
     <br><h2>Single responsibility principle III - methods within methods</h2>
@@ -1100,7 +1100,62 @@ set(...) computation time: 0.07359 sec
 Are both unique elements the same: True
 </code></pre>
 
-<br><h2 class="text-center bg-success text-white">Write code for reader who doesn't know it</h2><br>
+<br><h2 class="text-center bg-success text-white">Safe interface changes with branching</h2><br>
+
+Problem: Find best pokemon to start you battle!<br><br>
+
+<pre><code class="python">class Trainer:
+
+    # Loads of other code
+    ...
+
+    def get_starting_pokemon(self, opponents_pokemons):
+
+        scores = []
+
+        for current_pokemon in self.my_pokemons:
+
+            current_pokemon_score = 0
+
+            for opponent_pokemon in opponents_pokemons:
+
+                is_current_pokemon_expected_winner = get_expected_winner(current_pokemon, opponent_pokemon) == current_pokemon
+                current_pokemon_score += int(is_current_pokemon_expected_winner)
+
+            scores.append(current_pokemon_score)
+
+        return self.my_pokemons(np.argmax(scores))
+</code></pre>
+<br>
+<pre><code class="python">def get_expected_winner(first_pokemon, second_pokemon):
+    
+    # Compare levels, stats, and types to decide
+    return ...
+</code></pre>
+
+<br>Ok, this worked in Pokemon Red/Green/Yellow, but it's 21st Century, we have Pokemon Sun/Moon (and more) and now battlefield type influences Pokemons' stats as well! We need to <code>change get_expected_winner(current_pokemon, opponent_pokemon)</code> to:<br><br>
+
+<pre><code class="python">def get_expected_winner(first_pokemon, second_pokemon, battlefield_type):
+    
+    # Compare levels, strength, types and battlefield bonuses to decide
+    return ...
+</code></pre>
+
+<br>But if we try to change <code>get_expected_winner(...)</code> now, we will break the client (<code>Trainer</code> class) and it will stay broken until we finish writing <code>get_expected_winner(...)</code>. What if this will take us more than a few hours? Whole codebase will be broken during that time and we won't be able run our software.<br><br>
+
+Instead use a <b>branching method</b>:<br><br>
+<ul class="list-group">
+    <li class="list-group-item">1. Create a copy of <code>get_expected_winner(first_pokemon, second_pokemon)</code> called <code>get_expected_winner_new(first_pokemon, second_pokemon)</code></li>
+    <li class="list-group-item">2. Add new argument: <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code></li>
+    <li class="list-group-item">3. Work on <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code> until it's completed</li>
+    <li class="list-group-item">4. Change <code>Trainer</code> class to use <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code> and make sure it works as expected</li>
+    <li class="list-group-item">5. Remove <code>get_expected_winner(first_pokemon, second_pokemon)</code> and make sure everything works (maybe it had more clients you forgot about?)</li>
+    <li class="list-group-item">6. Rename <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code> to <code>get_expected_winner(first_pokemon, second_pokemon, battlefield_type)</code> </li>
+</ul><br>
+
+Using branching, you will arrive where you wanted to be, without ever breaking the client and always being able to run your software.<br><br>
+
+<br><h2 class="text-center bg-success text-white">Write code for reader who doesn't anything about your project</h2><br>
 
 <br><h2 class="text-center bg-success text-white">Recommended reading</h2><br>
 
