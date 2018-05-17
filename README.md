@@ -1,1 +1,1 @@
-# best_programming_practices
+# `clean_code_course`
