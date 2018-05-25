@@ -170,15 +170,13 @@ print(get_products_with_no_weight_set(products))
 
 Now results are as expected.<br><br>
 
-Ok, but what about commands that require asking questions? E.g. what if I want to delete files older than one week?
+Ok, but what about commands that require asking questions? E.g. what if I want to delete files older than some date?
 
 <pre><code class="python"># Command can make queries - no problem
-def delete_old_files(directory):
-
-    date_week_ago = datetime.datetime.now() - datetime.timedelta(days=7) 
+def delete_files_older_than(directory, date):
 
     # Query
-    old_files = get_files_older_than(directory, date_week_ago)
+    old_files = get_files_older_than(directory, date)
 
     # Command
     delete_files(old_files)
@@ -189,7 +187,7 @@ So calling a query from inside a command is fine.<br><br>
 What if I want to call a command from inside a query?<br>
 <b>That would mean query changes the system - so it's not a query ^^</b><br><br>
 Ok, but what if I want to delete old files and return back how many files are left?<br>
-<b>It's best to plit this logic into two functions</b><br><br>
+<b>It's best to split this logic into two functions</b><br><br>
 
 <pre><code class="python">delete_old_files(directory)
 get_files_count(directory)
@@ -235,7 +233,7 @@ class StringFormatter:
 </code></pre>
 
 <div class="text-center bg-success text-white">
-    <br><h2>Single responsibility principle II - methods</h2>
+    <br><h2>Single responsibility principle II - methods I</h2>
     <h4>Method should return only one type of objects, and preferably only one object</h4><br>
 </div><br>
 
@@ -284,7 +282,7 @@ def get_cats_bounding_boxes(image):
 </code></pre><br>
 
 <div class="text-center bg-success text-white">
-    <br><h2>Single responsibility principle III - methods within methods</h2>
+    <br><h2>Single responsibility principle III - methods II</h2>
     <h4>Move code that can be encapsulated to its own method</h4><br>
 </div><br>
 
@@ -328,11 +326,11 @@ vs<br><br>
     max_value = 100000
     min_value = 0
 
-    capped_value = get_capped_value(total_value, max_value, min_value)
-    return capped_value
+    clipped_value = clip(total_value, max_value, min_value)
+    return clipped_value
 
 
-def get_capped_value(value, max_value, min_value):
+def clip(value, max_value, min_value):
 
     if value > max_value:
          return max_value
