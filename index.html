@@ -67,7 +67,7 @@ my_house.renew(rooms)
 <br><pre><code class="python">imgSz = 1280
 cat = len(catDic.keys())
 
-genFctr = DataBtchsGenFactory(datDir, cat, imgSz)
+genFctr = DataBtchsGenFctr(datDir, cat, imgSz)
 </code></pre>
 
 vs<br><br>
@@ -76,7 +76,7 @@ vs<br><br>
 categories_count = len(categories_dictionary.keys())
 
 generator_factory = DataBatchesGeneratorFactory(
-    data_directory, categories_dictionary, image_size)
+    data_directory, categories_count, image_size)
 </code></pre>
     
 <br><h2 class="text-center bg-success text-white">Use names that correctly indicate responsibility</h2><br>
