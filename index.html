@@ -233,8 +233,8 @@ class StringFormatter:
 </code></pre>
 
 <div class="text-center bg-success text-white">
-    <br><h2>Single responsibility principle II - methods I</h2>
-    <h4>Method should return only one type of objects, and preferably only one object</h4><br>
+    <br><h2>Single responsibility principle II - functions I</h2>
+    <h4>Function should return only one type of objects, and preferably only one object</h4><br>
 </div><br>
 
 <pre><code class="python">def get_image_info(image):
@@ -282,8 +282,8 @@ def get_cats_bounding_boxes(image):
 </code></pre><br>
 
 <div class="text-center bg-success text-white">
-    <br><h2>Single responsibility principle III - methods II</h2>
-    <h4>Move code that can be encapsulated to its own method</h4><br>
+    <br><h2>Single responsibility principle III - functions II</h2>
+    <h4>Move code that can be encapsulated to its own function</h4><br>
 </div><br>
 
 
@@ -298,14 +298,15 @@ def get_cats_bounding_boxes(image):
     total_value = (age_discount * base_model_value) - \
             value_loss_due_to_mileage - value_loss_due_to_accidents
 
-    max_value = 100000
     min_value = 0
-
-    if total_value > max_value:
-            total_value = max_value
+    max_value = 100000
 
     if total_value < min_value:
-            total_value = min_value
+        total_value = min_value
+
+    if total_value > max_value:
+        total_value = max_value
+
 
     return total_value
 </code></pre>
@@ -323,14 +324,11 @@ vs<br><br>
     total_value = (age_discount * base_model_value) - \
             value_loss_due_to_mileage - value_loss_due_to_accidents
 
-    max_value = 100000
-    min_value = 0
-
-    clipped_value = clip(total_value, max_value, min_value)
+    clipped_value = clip(total_value, min_value=0, max_value=100000)
     return clipped_value
 
 
-def clip(value, max_value, min_value):
+def clip(value, min_value, max_value):
 
     if value > max_value:
          return max_value
