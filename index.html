@@ -568,7 +568,9 @@ class RandomBookDescriptionWidget:
 
 <pre><code class="python">def get_largest_absolute_element(data):
 
-    data = [abs(element) for element in data]
+    for index in range(len(data)):
+        data[index] = abs(data[index])
+
     return max(data)
 
 data = [2, -3, 5, -6]
@@ -661,7 +663,9 @@ images = load_images("2017_vacation")
 
 How does the code know where <b>2017_vacation</b> folder is?<br><br>
 
-<pre><code class="python">def load_images(directory):
+<pre><code class="python">import config
+
+def load_images(directory):
 
     paths_pattern = os.path.join(config.data_folder, directory, "*.jpg")
     paths = glob.glob(paths_pattern)
@@ -799,11 +803,8 @@ def print(document, print_settings):
 
     error = printer_connection.print(document_data_stream, print_settings)
 
-    if error != 0:
-        return error
-
-    # Success
-    return 0
+    # 0 if succeeded, else non-zero
+    return error
 
 
 # In client:
