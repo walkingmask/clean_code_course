@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <!-- <link rel="stylesheet" type="text/css" href="./theme.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+</head>
+<body>
+<div class="container">
+    
+<div class="jumbotron text-center">
+<h1>Clean Code</h1>
+<h2>AI Okinawa</h2>
+<h2>Jakub “Kuba” Kolodziejczyk</h2>
+</div>
+    
+<h2 class="text-center bg-success text-white">教科書やチュートリアル等は「良いコードの書き方」をしてる<br>とは限らない</h2><br>
+    
+<pre><code class="c">int marks = 100, *p1, *p2;
+p1 = &marks;
+p2 = p1;
+</code></pre>
+    
+<br><h2 class="text-center bg-success text-white">命名規則 I<br>自然で親切な名前をつける</h2><br>
+    
+<pre><code class="python" theme="monokai">for b in bb:
+    for j in c:
+        fff(b, j)
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">for box in boxes:
+    for color in colors:
+        draw(box, color)
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">命名規則 II<br>オブジェクトには名詞、アクションには動詞、複数形は複数形で</h2><br>
+
+<ul class="list-group">
+    <li class="list-group-item">オブジェクトは名詞</li>
+    <li class="list-group-item">アクションは動詞</li>
+    <li class="list-group-item">複数形は複数形</li>
+</ul><br>
+
+<pre><code class="python">my_house = House()
+print(my_house.get_value())
+
+rooms = ["kitchen", "garage"]
+my_house.renew(rooms)
+</code></pre>
+    
+    
+<br><h2 class="text-center bg-success text-white">命名規則 III<br>省略しない</h2>
+
+<br><pre><code class="python">imgSz = 1280
+cat = len(catDic.keys())
+
+genFctr = DataBtchsGenFctr(datDir, cat, imgSz)
+</code></pre>
+
+vs<br><br>
+    
+<pre><code class="python">image_size = 1280
+categories_count = len(categories_dictionary.keys())
+
+generator_factory = DataBatchesGeneratorFactory(
+    data_directory, categories_count, image_size)
+</code></pre>
+    
+<br><h2 class="text-center bg-success text-white">責任を正しく表す名前をつける</h2><br>
+    
+<pre><code class="python">def get_volume(box):
+
+    first_distance = get_distance(box[0], box[1])
+    second_distance = get_distance(box[1], box[2])
+    third_distance = get_distance(box[2], box[0])
+
+    return first_distance + second_distance + third_distance
+
+area = get_volume(box)
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">def get_circumference(triangle):
+
+    first_distance = get_distance(triangle[0], triangle[1])
+    second_distance = get_distance(triangle[1], triangle[2])
+    third_distance = get_distance(triangle[2], triangle[0])
+
+    return first_distance + second_distance + third_distance
+
+circumference = get_circumference(triangle)
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">「コマンド」と「クエリ」を区別する</h2><br>
+
+<ul class="list-group">
+    <li class="list-group-item">コマンド: リソーretrievesスの状態を変化させる</li>
+    <li class="list-group-item">クエリ: 情報を取得する</li>
+</ul><br>
+
+<h5>クエリのアドバンテージ:</h5>
+<ul class="list-group">
+    <li class="list-group-item">システムを変更しない呼び出しなのでコード内ですぐにわかる</li>
+    <li class="list-group-item">呼び出しの順序が関係ない</li>
+    <li class="list-group-item">簡単にテストできる</li>
+</ul><br>
+
+
+<pre><code class="python">def get_total_weight(products):
+
+    total_weight = 0
+
+    for product in products:
+
+        if product.weight is None:
+            product.weight = 0
+
+        total_weight += product.weight
+
+    return total_weight
+</code></pre>
+
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+    
+print(get_products_with_no_weight_set(products)
+# returns [Product("post_stamp")]
+</code></pre>
+
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+
+print(get_total_weight(products))
+print(get_products_with_no_weight_set(products))
+# returns empty list
+</code></pre>
+
+より良い解決方法
+
+<pre><code class="python">def get_total_weight(products):
+
+    total_weight = 0
+
+    for product in products:
+
+        if product.weight is not None:
+            total_weight += product.weight
+
+    return total_weight
+</code></pre>
+
+<pre><code class="python">products = [Product("brick", 1), Product("post_stamp"), Product("ball", 0.5)]
+
+print(get_total_weight(products))
+print(get_products_with_no_weight_set(products))
+# returns [Product("post_stamp")]
+</code></pre>
+
+期待した通りの結果が得られた。<br><br>
+
+いいですね。しかし、質問を必要とするコマンドは？（例えば、ある日付より古いファイルを削除したい場合）
+
+<pre><code class="python"># Command can make queries - no problem
+def delete_files_older_than(directory, date):
+
+    # Query
+    old_files = get_files_older_than(directory, date)
+
+    # Command
+    delete_files(old_files)
+</code></pre>
+
+コマンドの中でクエリを呼ぶのは大丈夫。<br><br>
+
+クエリの中でコマンドを呼ぶのはどうだろう？<br>
+<b>それはつまりクエリがシステムを変更するということ - それはクエリじゃないね ^^</b><br><br>
+OK、しかし古いファイルを消した時にいくつ消したか知りたいときはどうでしょう？<br>
+<b>このロジックを二つの関数に分けるのがベストです</b><br><br>
+
+<pre><code class="python">delete_old_files(directory)
+get_files_count(directory)
+</code></pre><br>
+
+<div class="text-center bg-success text-white">
+    <br><h2>単一責任の原則 I - クラス</h2>
+    <h4>クラスは一つのタスクだけを担当すべし</h4><br>
+</div><br>
+
+<pre><code class="python">class AreaCalculator:
+
+    def get_triangle_area(triangle):
+            # ...
+
+    def get_rectangle_area(rectangle):
+            # ...
+
+    def get_polygon_area(polygon):
+            # ...
+
+    def split_string(text):
+            # ...
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">class AreaCalculator:
+
+    def get_triangle_area(triangle):
+        # ...
+
+    def get_rectangle_area(rectangle):
+        # ...
+
+    def get_polygon_area(polygon):
+        # ...
+
+class StringFormatter:
+
+    def split_string(text):
+        # ...
+</code></pre>
+
+<div class="text-center bg-success text-white">
+    <br><h2>単一責任の原則 II - 関数 I</h2>
+    <h4>関数は一つのタイプのオブジェクトだけを、できれば一つだけ返すべし</h4><br>
+</div><br>
+
+<pre><code class="python">def get_image_info(image):
+
+    # Loads of complicated computations, 10 lines of code
+    size = ....
+
+    # Loads of complicated computations, 100 lines of code
+    histogram = ...
+
+    # Loads of complicated computations, 200 lines of code
+    faces_bounding_boxes = ...
+
+    # Loads of complicated computations, 200 lines of code
+    cats_bounding_boxes = ...
+
+    return size, histogram, faces_bounding_boxes, cats_bounding_boxes
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">def get_image_size(image):
+
+    # Loads of complicated computations, 10 lines of code
+    size = ....
+    return size
+
+def get_image_histogram(image):
+
+    # Loads of complicated computations, 100 lines of code
+    histogram = ...
+    return histogram
+
+def get_faces_bounding_boxes(image):
+
+    # Loads of complicated computations, 200 lines of code
+    faces_bounding_boxes = ...
+    return faces_bounding_boxes
+
+def get_cats_bounding_boxes(image):
+
+    # Loads of complicated computations, 200 lines of code
+    cats_bounding_boxes = ...
+    return cats_bounding_boxes
+</code></pre><br>
+
+<div class="text-center bg-success text-white">
+    <br><h2>単一責任の原則 III - 関数 II</h2>
+    <h4>カプセル化できるコードは関数として定義すべし</h4><br>
+</div><br>
+
+
+<pre><code class="python">def get_car_value(model, year, mileage, accidents_history):
+
+    base_model_value = get_base_model_value(model)
+    age_discount = get_age_discount(get_current_year() - year)
+
+    value_loss_due_to_mileage = get_value_loss_due_to_mileage(mileage)
+    value_loss_due_to_accidents = get_value_loss_due_to_accidents(accidents_history)
+
+    total_value = (age_discount * base_model_value) - \
+            value_loss_due_to_mileage - value_loss_due_to_accidents
+
+    min_value = 0
+    max_value = 100000
+
+    if total_value < min_value:
+        total_value = min_value
+
+    if total_value > max_value:
+        total_value = max_value
+
+
+    return total_value
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">def get_car_value(model, year, mileage, accidents_history):
+
+    base_model_value = get_base_model_value(model)
+    age_discount = get_age_discount(get_current_year() - year)
+
+    value_loss_due_to_mileage = get_value_loss_due_to_mileage(mileage)
+    value_loss_due_to_accidents = get_value_loss_due_to_accidents(accidents_history)
+
+    total_value = (age_discount * base_model_value) - \
+            value_loss_due_to_mileage - value_loss_due_to_accidents
+
+    clipped_value = clip(total_value, min_value=0, max_value=100000)
+    return clipped_value
+
+
+def clip(value, min_value, max_value):
+
+    if value > max_value:
+         return max_value
+
+    if value < min_value:
+         return min_value
+
+    return value
+</code></pre>
+
+
+<br><h2 class="text-center bg-success text-white">DRY (Don't Repeat yourself, 繰り返さない) I - 同一のコード</h2><br>
+
+<pre><code class="python">class BooksShoppingWidget:
+
+    def __init__(books):
+
+        # Display top navigation widget
+        ...
+
+        # Build query widget, 20 lines of code
+        ...
+
+        # Build books list
+        for book in books:
+
+            # Display title
+            ...
+
+            # Display book cover
+            ...
+
+            # Get first 100 characters of book description
+            description = []
+
+            with open(book.url) as book_data:
+                while len(description) < 100:
+
+                    line = book_data.read_line()
+                    description.extend(line)
+
+            # Display description
+            ... = description[:100]
+
+
+        # build recommendations widget, 20 lines of code
+        ...
+
+
+class RandomBookDescriptionWidget:
+
+    def __init__(books):
+
+        index = get_random_integer(0, len(books))
+        book = books[index]
+
+        # Get first 100 characters of book description
+        description = []
+
+        with open(book.url) as book_data:
+            while len(description) < 100:
+
+                line = book_data.read_line()
+                description.extend(line)
+
+        # Display description
+        ... = description[:100]
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">def get_book_description(book):
+
+    # Get first 100 characters of book description
+    description = []
+
+    with open(book.url) as book_data:
+        while len(description) < 100:
+
+            line = book_data.read_line()
+            description.extend(line)
+
+    return description[:100]
+
+
+class BooksShoppingWidget:
+
+    def __init__(books):
+
+        # Display top navigation widget
+        ...
+
+        # Build query widget, 20 lines of code
+        ...
+
+        # Build books list
+        for book in books:
+
+            # Display title
+            ...
+
+            # Display book cover
+            ...
+
+            # Display description
+            ... = get_book_description(book)
+
+        # build recommendations widget, 20 lines of code
+        ...
+
+
+class RandomBookDescriptionWidget:
+
+    def __init__(books):
+
+        index = get_random_integer(0, len(books))
+        book = books[index]
+
+        # Display description
+        ... = get_book_description(book)
+</code></pre>
+
+
+<br><h2 class="text-center bg-success text-white">DRY (Don't Repeat yourself, 繰り返さない) II - ほとんど同じコード</h2><br>
+
+<pre><code class="python">class BooksShoppingWidget:
+
+    def __init__(books):
+
+        # Display top navigation widget
+        ...
+
+        # Build query widget, 20 lines of code
+        ...
+
+        # Build books list
+        for book in books:
+
+            # Display title
+            ...
+
+            # Display book cover
+            ...
+
+            # Get first 100 characters of book description
+            description = []
+
+            with open(book.url) as book_data:
+
+                while len(description) < 100:
+
+                    line = book_data.read_line()
+                    description.extend(line)
+
+        # Display description
+            ... = description[:100]
+
+
+        # build recommendations widget, 20 lines of code
+        ...
+
+
+class RandomBookDescriptionWidget:
+
+    def __init__(books):
+
+        index = get_random_integer(0, len(books))
+        book = books[index]
+
+        # Get first 200 characters of book description
+        description = []
+
+        with open(book.url) as book_data:
+            while len(description) < 200:
+
+                line = book_data.read_line()
+                description.extend(line)
+
+        # Display description
+        ... = description[:200]
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python">def get_book_description(book, characters_count):
+
+    description = []
+
+    with open(book.url) as book_data:
+        while len(description) < characters_count:
+
+            line = book_data.read_line()
+            description.extend(line)
+
+    return description[:characters_count]
+
+
+class BooksShoppingWidget:
+
+    def __init__(books):
+
+        # Display top navigation widget
+        ...
+
+        # Build query widget, 20 lines of code
+        ...
+
+        # Build books list
+        for book in books:
+
+            # Display title
+            ...
+
+            # Display book cover
+            ...
+
+            # Display description
+            ... = get_book_description(book, 100)
+
+
+        # build recommendations widget, 20 lines of code
+        ...
+
+
+class RandomBookDescriptionWidget:
+
+    def __init__(books):
+
+        index = get_random_integer(0, len(books))
+        book = books[index]
+
+        # Display description
+        ... = get_book_description(book, 200)
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">入力を変更しない</h2><br>
+
+<pre><code class="python">def get_largest_absolute_element(data):
+
+    for index in range(len(data)):
+        data[index] = abs(data[index])
+
+    return max(data)
+
+data = [2, -3, 5, -6]
+
+print(data)
+print(get_largest_absolute_element(data))
+print(data)
+</code></pre>
+
+vs<br><br>
+
+
+<pre><code class="python">def get_largest_absolute_element(data):
+
+    absolute_data = [abs(element) for element in data]
+    return max(absolute_data)
+
+data = [2, -3, 5, -6]
+
+print(data)
+print(get_largest_absolute_element(data))
+print(data)
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">大きすぎる関数を小さく分ける</h2><br>
+
+<pre><code class="python">def run_experiment(data_directory, model_path):
+
+    # Build data generator
+    # 20 lines of code
+
+    # Load model
+    # 3 lines of code
+
+    # Iterate over data, computing all predictions
+    # 35 lines of code
+
+    # Analyze data
+    # 15 lines of code
+
+    # Print results
+    # 10 lines of code
+
+    # Total of 83 lines of code
+</code></pre>
+
+<br><pre>
+問題点:
+- 全てが頭に優しくない -> 
+    - 理解しにくい
+    - 改善しにくい
+    - バグを見つけにくい
+    - 共有しにくい、特に新しく参加したエンジニアに
+- テストしにくい -> 
+    - 正しく動いているか保証しにくい ->
+        - どんなゴミを計算しているかわかりにくい
+            - 結果を信頼していいかわかりにくい
+</pre>
+
+vs<br><br>
+
+<pre><code class="python">def run_experiment(data_directory, model_path):
+
+    # Build data generator
+    data_generator = get_data_generator(data_directory)
+
+    # Load model
+    # 3 lines of code
+
+    # Iterate over data, computing all predictions
+    predictions = get_predictions(model, data_generator)
+
+    # Analyze data
+    analysis_report = get_predictions_analysis(predictions)
+
+    # Print results
+    # 10 lines of code
+
+    # Total of 20 lines of code
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">いつだって「わかりやすい」のは「わかりにくい」より良い I - グローバルを使う</h2><br>
+
+<pre><code class="python"># script.py
+images = load_images("2017_vacation")
+
+# Do stuff
+# ...
+</code></pre>
+
+このコードはどうやって<b>2017_vacation</b>のあるフォルダを知ることができるでしょう？<br><br>
+
+<pre><code class="python">import config
+
+def load_images(directory):
+
+    paths_pattern = os.path.join(config.data_folder, directory, "*.jpg")
+    paths = glob.glob(paths_pattern)
+
+    images = [cv2.image(path) for path in paths]
+    return images
+</code></pre>
+
+<pre><code class="python"># Inside config module
+data_folder = "/Users/kuba/data"
+</code></pre>
+
+まず<b>load_images(...)</b>を読まないといけないでしょう。そして<b>config.py</b>を使って何かしていることを知るはずです。
+<b>"/Users/kuba/data"</b>の無い別のコンピュータで、なぜスクリプトが失敗するか、<b>scripy.py</b>だけを見て判断することはできないはずです。<br><br>
+
+解決方法: フルパスを使いましょう<br><br>
+
+<pre><code class="python"># processing.py
+images = load_images("/Users/kuba/data/2017_vacation")
+
+# Do stuff
+# ...
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">いつだって「わかりやすい」のは「わかりにくい」より良い II - クライアントを念頭に置く</h2><br>
+
+<pre><code class="python">def get_house_value(house_data):
+
+    if house_data.last_evaluation_date == time.today:
+        return -1
+
+    # Look at size, number of rooms, neighbourhood
+    # and other factors, expensive computation
+    value = ...
+
+    return value
+</code></pre>
+
+なぜ<code>last_evaluation_date == time.today</code> の時、-1 が返されるのでしょう？<br><br>
+
+<pre><code class="python">class PropertiesManager:
+
+    # Other code
+    # ...
+
+    def get_house_data(id):
+
+        house_data = database.get_house_data(id)
+        value = get_house_value(house_data)
+
+        if value == -1:
+           value = self.houses_values_evaluated_today[id]
+
+        house_data.value = value
+        return house_data
+</code></pre>
+
+OK、-1 の意味を知らない人がキャッシュされた結果を使用して関数を呼び出す必要がある場合はどうなりますか？<br>
+解決策: キャッシュの状態チェックをPropertiesManageに移動します<br><br>
+
+<pre><code class="python">class PropertiesManager:
+
+    # Other code
+    # ...
+
+    def get_house_data(id):
+
+        house_data = database.get_house_data(id)
+
+        if id not in self.houses_values_evaluated_today.keys():
+            self.houses_values_evaluated_today[id] = get_house_value(house_data)
+
+        house_data.value = self.houses_values_evaluated_today[id]
+        return house_data
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">必要最小限の処理をする</h2><br>
+
+問題: 複数の箱の面積を計算したい。<br><br>
+
+<pre><code class="python">def get_areas(boxes):
+
+    areas = []
+
+    for box in boxes:
+
+        width = box[2] - box[1]
+        height = box[3] - box[0]
+        area = width * height
+        areas.append(area)
+
+    return areas
+</code></pre>
+
+これは正しい処理ですが、一つの箱だけを計算したいときはどうしますか？おそらくこのように呼び出します:<br><br>
+
+<pre><code class="python"># リストに入れて、結果をリストから取り出します
+area = get_areas([box])[0]
+</code></pre>
+
+このアプローチは不恰好で、テストが複雑になります。また、不必要なforループの複雑さが問題に追加されます。<br>
+解決策 - 必要な最小のタスクを見つける: 単一のボックスの面積を計算する:<br><br>
+
+<pre><code class="python">def get_area(box):
+
+    width = box[2] - box[1]
+    height = box[3] - box[0]
+    return width * height
+</code></pre>
+
+複数の箱の面積を得たい場合もシンプルです:<br><br>
+
+<pre><code class="python">areas = [get_area(box) for box in boxes]
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">エラーコード対例外</h2><br>
+
+<h5>サンプルタスク: ドキュメントの出力</h5><br>
+
+<pre><code class="python"># エラーコードを用いた場合
+def print(document, print_settings):
+
+    # プリンターへ接続
+    printer_connection, error = get_printer_connection()
+
+    if error != 0:
+        return error
+
+    # ドキュメントのデータストリームの取得
+    document_data_stream, error = document.get_data_stream()
+
+    if error != 0:
+        return error
+
+    error = printer_connection.print(document_data_stream, print_settings)
+
+    # 0なら成功、他は失敗
+    return error
+
+
+# クライアント側で:
+error = print(document, print_settings)
+
+if error != 0:
+    # Do something
+</code></pre>
+
+vs<br><br>
+
+<pre><code class="python"># 例外を用いた場合:
+def print(document, print_settings):
+
+    # プリンターへ接続
+    printer_connection = get_printer_connection()
+
+    # ドキュメントのデータストリームの取得
+    document_data_stream = document.get_data_stream()
+
+    # 出力
+    printer_connection.print(document_data_stream, print_settings)
+
+
+# In client
+try:
+    print(document, print_settings)
+except:
+    # Do something
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">ユニットテスト</h2><br>
+
+<h5>なぜテストが &hearts; か:</h5>
+<ul class="list-group">
+    <li class="list-group-item">ピカピカ新品の関数が正しく動くか見てくれる</li>
+    <li class="list-group-item">リファクタリングで何か壊れた時に教えてくれる</li>
+    <li class="list-group-item">テストが難しいコードは悪いコード、つまりいいコードが書ける</li>
+    <li class="list-group-item">実行可能なドキュメントが作れる</li>
+</ul><br>
+
+<pre><code class="python">def get_max(values):
+    """
+    A simple function to get maximum value from a list of values
+    """
+
+    max_value = values[0]
+
+    for value in values[1:]:
+        if value > max_value:
+            max_value = value
+
+    return max_value
+</code></pre>
+
+<pre><code class="python"># Execute with py.test or similar
+def test_get_max():
+
+    values = [2, 5, 10, 1]
+
+    expected = 10
+    actual = get_max(values)
+
+    assert expected == actual
+</code></pre>
+
+もっと難しい例<br><br>
+
+<pre><code class="python"># この関数を一切のバグなしに書ける自信がありますか？
+def get_polygon_area(polygon):
+    
+    # Loads of math
+    # ...
+    return area
+</code></pre>
+
+ユニットテストがあればコードが正しいか間違っているか知ることができます！<br><br>
+
+<pre><code class="python">def test_get_polygon_area_square():
+
+    polygon = [(0, 0), (10, 0), (10, 10), (0, 10)]
+
+    expected == 100
+    actual = get_polygon_area(polygon)
+
+    assert expected == actual
+
+
+def test_get_polygon_area_rectangle():
+
+    polygon = [(0, 0), (20, 0), (20, 10), (0, 10)]
+
+    expected == 200
+    actual = get_polygon_area(polygon)
+
+    assert expected == get_polygon_area(polygon)
+
+
+def test_get_polygon_area_triangle():
+
+    polygon = [(0, 0), (10, 0), (5, 5)]
+
+    expected == 25
+    actual = get_polygon_area(polygon)
+
+    assert expected == get_polygon_area(polygon)
+</code></pre>
+
+<br><h5>けどテスト書くとコード書くの遅くなるよ！</h5><br>
+
+って人は考えてみましょう:
+<ul class="list-group">
+    <li class="list-group-item">コードが正しく動いてるかわからないなら、どうしたら開発が完了したと言えますか？完了したかわからないなら、どうやってテストのせいで遅くなったか測れますか？</li>
+    <li class="list-group-item">30分かけて正しいコードを書く方がいいですか？それとも、10分で1つのバグを含むコードを書いて、次の週に4時間チームの開発を止めて、どこが間違ってるか、どうやって直すかを説明する方がいいですか？</li>
+    <li class="list-group-item">バグを自分で見つけるのが好きですか？それとも、怒っている顧客があなたのボスに持ってきた方がいいですか？</li>
+</ul><br>
+
+<h2 class="text-center bg-success text-white">複雑なクラスをコンポーネントに分割する</h2><br>
+
+かなり複雑なGUIを使用してアプリケーションを作成する必要があるとします<br><br>
+<figure>
+    <img src="./images/expense_manager.png" class="mx-auto d-block">
+    <figcaption class="text-center">Expense Manager app by Bishinews</figcaption>
+</figure>
+
+<br>素朴な実装方法はこんな感じです<br><br>
+
+<pre><code class="python">class App {
+    
+    def __init__(self):
+
+        # Create buttons for selecting time ranges used by expenses graphics
+        time_ranges_buttons_container = Container(...)
+
+        self.all_button = Button("All", ...)
+        time_ranges_buttons_container.add(time_ranges_buttons_container)
+
+        self.weekly_button = Button("Weekly", ...)
+        time_ranges_buttons_container.add(time_ranges_buttons_container)
+
+        self.monthly_button = Button("Monthly", ...)
+        time_ranges_buttons_container.add(time_ranges_buttons_container)
+
+        self.yearly_button = Button("Yearly", ...)
+        time_ranges_buttons_container.add(time_ranges_buttons_container)
+
+        # 20 lines of UI code around buttons
+
+        self.layout.append(time_ranges_buttons_container)
+
+        # 500 more lines of code building other widgets
+</code></pre>
+
+画面上のすべてのボタン、ラベル、その他の簡単なウィジェットは、Appクラス内で定義されています。 これにより、Appクラスが非常に大きく複雑になるため、作業が難しくなり、中断しやすくなります。<br>
+
+Appクラスの中にすべてを書くのではなく、単純な要素をカプセル化できるコンポーネントを考えます。<br><br>
+
+<pre><code class="python">class App {
+    
+    def __init__(self):
+
+        self.time_ranges_container = TimeRangesContainer(...)
+        self.layout.append(self.time_ranges_container)
+
+        # Access buttons with self.time_ranges_container.weekly_button, etc
+
+        # 50 lines or less of code building other widgets, since we encapsulated them in components as well
+
+
+class TimeRangesContainer(Container):
+
+    def __init__(...):
+
+        self.all_button = Button("All", ...)
+        self.add(self.all_button)
+
+        self.weekly_button = Button("Weekly", ...)
+        self.add(self.weekly_button)
+
+        self.monthly_button = Button("Monthly", ...)
+        self.add(self.monthly_button)
+
+        self.yearly_button = Button("Yearly", ...)
+        self.add(self.yearly_button)
+
+        # 20 lines of UI code around buttons
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">無名関数とその欠点</h2><br>
+無名関数なしの場合:<br>
+
+<pre><code class="js">function on_button_clicked() {
+    // Do something
+}
+
+$(".btn_1").click(on_button_clicked);
+</code></pre>
+
+無名関数ありの場合:
+
+<pre><code class="js">$(".btn_1").click(function() {
+  // Do something
+});
+</code></pre>
+
+問題はテストできないことです。以下のコードが正しいかどうかをどうやって知ることができますか？
+
+<pre><code class="js">$(".phone_number").focusout(function() {
+  // get text
+  var phone_number = $(".phone_number").val() ;
+
+  // format it in xxx-yyyy-zzz form
+  // ...
+
+  // write it back to phone_number_form
+  $(".phone_number").val(formatted_phone_number) ;
+});
+</code></pre>
+
+もしも、こう書けば
+
+<pre><code class="js">function get_formatted_phone_number(phone_number) {
+
+    // format it in xxx-yyyy-zzz form
+    // ....
+    return formatted_phone_number ;
+}
+
+
+$(".phone_number").focusout(function() {
+
+    var phone_number = $(".phone_number").val() ;
+    var formatted_phone_number = get_formatted_phone_number(phone_number) ;
+    $(".phone_number").val(formatted_phone_number) ;
+});
+</code></pre>
+
+テスト可能になりますね。<br>
+
+<br><h2 class="text-center bg-success text-white">ユニークな要素をフィルタリングするためにセットを使用する</h2><br>
+
+<pre><code class="python">import time
+import numpy as np
+
+
+def get_unique_elements(data):
+
+    unique_elements = []
+
+    for element in data:
+
+        element_already_added = False
+
+        for unique_element in unique_elements:
+
+            if element == unique_element:
+                element_already_added = True
+                # Ugly
+                break
+
+        if not element_already_added:
+            unique_elements.append(element)
+
+    return unique_elements
+
+
+def main():
+
+    data = np.random.randint(0, 100, 1000000)
+
+    start = time.time()
+    first_unique_elements = get_unique_elements(data)
+    print("get_unique_elements(...) computation time: {:.5f} sec".format(time.time() - start))
+
+    start = time.time()
+    second_unique_elements = set(data)
+    print("set(...) computation time: {:.5f} sec".format(time.time() - start))
+
+    print("Are both unique elements arrays the same: {}".format(
+        sorted(first_unique_elements) == sorted(second_unique_elements)))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<pre><code class="shell">python ./main.py
+get_unique_elements(...) computation time: 1.90668 sec
+set(...) computation time: 0.07359 sec
+Are both unique elements the same: True
+</code></pre>
+
+<br><h2 class="text-center bg-success text-white">ブランチによる安全なインターフェースの変更</h2><br>
+
+問題: あなたが戦いを開始するために最高のポケモンを見つけましょう！<br><br>
+
+<pre><code class="python">class Trainer:
+
+    # Loads of other code
+    ...
+
+    def get_starting_pokemon(self, opponents_pokemons):
+
+        scores = []
+
+        for current_pokemon in self.my_pokemons:
+
+            current_pokemon_score = 0
+
+            for opponent_pokemon in opponents_pokemons:
+
+                is_current_pokemon_expected_winner = get_expected_winner(current_pokemon, opponent_pokemon) == current_pokemon
+                current_pokemon_score += int(is_current_pokemon_expected_winner)
+
+            scores.append(current_pokemon_score)
+
+        return self.my_pokemons(np.argmax(scores))
+</code></pre>
+<br>
+<pre><code class="python">def get_expected_winner(first_pokemon, second_pokemon):
+    
+    # Compare levels, stats, and types to decide
+    return ...
+</code></pre>
+
+<br>OK、これはポケモン赤/緑/黄が対象なら動きますが、21世紀にはポケモンサン/ムーン（そしてそれ以上）があり、バトルフィールドのタイプがポケモンのステータスにも影響しますね！<code>get_expected_winner(current_pokemon, opponent_pokemon)</code>を次のように変更する必要があります:<br><br>
+
+<pre><code class="python">def get_expected_winner(first_pokemon, second_pokemon, battlefield_type):
+    
+    # Compare levels, strength, types and battlefield bonuses to decide
+    return ...
+</code></pre>
+
+<br>しかし<code>get_expected_winner(...)</code>を変更しようとすると、おそらくクライアント (<code>Trainer</code> クラス) を壊してしまい、かつ<code>get_expected_winner(...)</code>を書き終わるまでそれは壊れたままでしょう。これが数時間かかる場合どうなるでしょう？コードベース (リポジトリ) がその間に壊れてしまいソフトウェアが動かせなくなってしまうでしょう。<br><br>
+
+代わりに<b>ブランチングメソッド</b>を使いましょう:<br><br>
+<ul class="list-group">
+    <li class="list-group-item">1. <code>get_expected_winner(first_pokemon, second_pokemon)</code>のコピー<code>get_expected_winner_new(first_pokemon, second_pokemon)</code>を作ります</li>
+    <li class="list-group-item">2. 新しい引数を追加します: <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code></li>
+    <li class="list-group-item">3. 開発が完了するまで<code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code>を使います</li>
+    <li class="list-group-item">4. <code>Trainer</code>クラスを<code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code>を使うように変更して期待通りに動くことを確認します</li>
+    <li class="list-group-item">5. <code>get_expected_winner(first_pokemon, second_pokemon)</code>を削除して全てがうまく動くことを確認します (たぶん、あなたが忘れているクライアントがあるでしょ？)</li>
+    <li class="list-group-item">6. <code>get_expected_winner_new(first_pokemon, second_pokemon, battlefield_type)</code>を<code>get_expected_winner(first_pokemon, second_pokemon, battlefield_type)</code>にリネームします</li>
+</ul><br>
+
+ブランチングを使用することで、クライアントを壊すことなく、いつでもソフトウェアを実行できるようになりました。<br><br>
+
+<br><h2 class="text-center bg-success text-white">プロジェクトに全く関わっていない人に向けてコードを書く</h2><br>
+
+<br><h2 class="text-center bg-success text-white">おすすめの文献</h2><br>
+
+<ul class="list-group">
+    <li class="list-group-item">"Code Complete" by Steve McConnell (日本語版あり)</li>
+    <li class="list-group-item">"The Algorithm Design Manual" by Steven S. Skiena (日本語版あり)</li>
+    <li class="list-group-item">"Design patterns: Elements of reusable object-oriented software" by Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides (Gang of Four)</li>
+    <li class="list-group-item">"Effective Java" by Joshua Bloch (日本語版あり)</li>
+</ul><br>
+
+</div>
+</body>
+</html>
+
+
